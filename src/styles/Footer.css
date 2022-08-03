@@ -1,0 +1,22 @@
+.footer {
+  justify-content: space-around;
+  display: flex;
+  left: 0;
+  right: 0;
+  align-items: center;
+  height: 4rem;
+  padding: 3rem;
+  background-color: rgb(213, 213, 213);
+  color: rgba(0, 0, 0, 0.368);
+  margin-top: auto;
+}
+
+h3 {
+  color: rgba(0, 0, 0, 0.368);
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 0rem 2rem;
+  }
+}

@@ -1,0 +1,25 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 0rem 3rem;
+  height: 5rem;
+  background-color: #ffffff;
+  border-bottom-width: 1px;
+  border-color: rgba(45, 45, 66, 0.08);
+}
+
+nav h3 {
+  color: rgba(126, 78, 182, 0.938);
+  font-size: 2.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  nav {
+    padding: 0rem 2rem;
+  }
+}
