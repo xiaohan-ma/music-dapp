@@ -4,18 +4,21 @@
   padding-left: 3rem;
   padding-right: 3rem;
   padding-bottom: 5rem;
-  justify-content: space-evenly;
+  justify-content: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
 /** Homepage overall styles **/
-.container h1 {
+h1,
+h2 {
   color: #2d2d42;
 }
 
-.container h3 {
+.container h3,
+p {
   color: #2d2d42b0;
   font-weight: 500;
 }
@@ -47,6 +50,7 @@ button:hover {
 .promoSection {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   padding: 4rem 10rem;
@@ -85,9 +89,43 @@ button:hover {
   word-wrap: break-word;
   width: 100%;
   justify-content: left;
-  font-size: 2.5rem;
+  font-size: 3rem;
   display: flex;
   margin-bottom: 3rem;
+}
+
+/** Section one - explore music section **/
+.sectionOne {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 2rem;
+  padding: 4rem 10rem;
+}
+
+.sectionTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem 0rem;
+}
+
+.sectionTitle h1 {
+  letter-spacing: 0.1rem;
+  margin-bottom: 1.8rem;
+  font-size: 3rem;
+}
+
+.sectionTitle p {
+  letter-spacing: 0.1rem;
+  font-size: 1.4rem;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 @media screen and (max-width: 768px) {

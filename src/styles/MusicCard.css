@@ -1,0 +1,33 @@
+.card {
+  margin-top: 3rem;
+  width: 20rem;
+  height: 26rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 10px 20px 35px rgba(200, 210, 210, 0.3);
+}
+
+.musicDesc {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  padding-left: 2rem;
+  text-align: left;
+}
+
+.card h2 {
+  margin-bottom: 0.8rem;
+}
+
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.1rem;
+}
+
+img {
+  height: 18rem;
+  width: 18rem;
+  border-radius: 2rem;
+}
