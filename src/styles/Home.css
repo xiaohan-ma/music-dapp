@@ -1,59 +1,10 @@
-/** Homepage Container Div **/
-.container {
-  padding-top: 4rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  padding-bottom: 5rem;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-/** Homepage overall styles **/
-h1,
-h2 {
-  color: #2d2d42;
-}
-
-.container h3,
-p {
-  color: #2d2d42b0;
-  font-weight: 500;
-}
-
-button {
-  margin: 0;
-  border-radius: 0.4rem;
-  color: rgba(126, 78, 182, 0.938);
-  background-color: rgba(217, 199, 239, 0.754);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 0.7rem 1.4rem;
-  border: 0 solid #e5e7eb;
-  font-size: 0.95rem;
-  font-weight: bold;
-  letter-spacing: 0.03rem;
-}
-
-button:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(126 78 182 / var(--tw-bg-opacity));
-  color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-/** Song/Album promotional section **/
-
+/** Homepage Song/Album promotional section **/
 .promoSection {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  padding: 4rem 10rem;
+  padding: 5rem 15rem;
   border-radius: 2rem;
   box-shadow: 15px 20px 40px rgba(216, 211, 211, 0.4);
 }
@@ -63,12 +14,11 @@ button:hover {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-right: 8rem;
 }
 
 .promoAlbumCover img {
-  height: 25rem;
-  width: 25rem;
+  height: 300px;
+  width: 300px;
   border-radius: 0.7rem;
 }
 
@@ -78,6 +28,7 @@ button:hover {
   width: 25rem;
   align-items: flex-start;
   flex-direction: column;
+  padding-left: 4rem;
 }
 
 .promoDetails h3 {
@@ -129,7 +80,16 @@ button:hover {
 }
 
 @media screen and (max-width: 768px) {
-  container {
-    padding: 2rem 2rem;
+  .promoSection {
+    flex-direction: column;
+    padding: 4rem 2rem;
+  }
+
+  .promoDetails {
+    margin-top: 1rem;
+  }
+
+  .sectionOne {
+    padding: 4rem 2rem;
   }
 }

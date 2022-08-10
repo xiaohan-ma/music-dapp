@@ -7,7 +7,6 @@
 //searchbar?
 
 import React from "react";
-import { useState, useEffect } from "react";
 import "../styles/Home.css";
 import PromoCover from "../image/moonbird.png";
 import MusicCard from "../components/MusicCard";

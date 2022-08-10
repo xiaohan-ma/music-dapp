@@ -1,8 +1,8 @@
-import "../styles/Login.css";
+import "../styles/Button.css";
 import { connectWallet, getCurrentWalletConnected } from "../utils/interact";
 import { useEffect } from "react";
 
-const Login = (props) => {
+function Login(props) {
   const connectWalletPressed = async () => {
     const walletResponse = await connectWallet();
     props.setStatus(walletResponse.status);
@@ -78,6 +78,6 @@ const Login = (props) => {
       {props.walletAddress.length > 0 ? renderDisconnect() : renderConnect()}
     </div>
   );
-};
+}
 
 export default Login;

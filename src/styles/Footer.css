@@ -6,7 +6,9 @@
   align-items: center;
   height: 4rem;
   padding: 3rem;
-  background-color: rgb(213, 213, 213);
+  background-color: #ffffff;
+  border-top-width: 1px;
+  border-color: rgba(45, 45, 66, 0.08);
   color: rgba(0, 0, 0, 0.368);
   margin-top: auto;
 }

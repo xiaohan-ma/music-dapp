@@ -1,3 +1,4 @@
+/** Global CSS **/
 .App {
   line-height: 24px;
   display: flex;
@@ -5,4 +6,61 @@
   min-height: 100vh;
   word-wrap: break-word;
   background-color: #fbfbfd;
+}
+
+/** Pages Container Div **/
+.container {
+  padding-top: 4rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-bottom: 5rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/** Pages overall styles **/
+h1,
+h2 {
+  color: #2d2d42;
+}
+
+.container h3,
+p {
+  color: #2d2d42b0;
+  font-weight: 500;
+}
+
+button {
+  margin: 0;
+  border-radius: 0.4rem;
+  color: rgba(126, 78, 182, 0.938);
+  background-color: rgba(217, 199, 239, 0.754);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.7rem 1.4rem;
+  border: 0 solid #e5e7eb;
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 0.03rem;
+}
+
+button:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(126 78 182 / var(--tw-bg-opacity));
+  color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.link {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 2rem 2rem;
+  }
 }

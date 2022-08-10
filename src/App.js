@@ -2,8 +2,9 @@ import "./App.css";
 import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import ProfilePage from "./pages/ProfilePage";
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
   /* State variables */
@@ -22,6 +23,10 @@ function App() {
       />
       <Routes>
         <Route path="/" exact element={<Home />} />
+        <Route
+          path="/account"
+          element={<ProfilePage walletAddress={walletAddress} />}
+        />
         <Route path="*" element={() => "404 Page Not Found"} />
       </Routes>
       <Footer />

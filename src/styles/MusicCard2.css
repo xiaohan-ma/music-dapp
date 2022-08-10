@@ -1,0 +1,28 @@
+.card2 {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.musicDesc2 {
+  display: flex;
+  margin-top: 0.4rem;
+  flex-direction: column;
+  align-self: flex-start;
+  text-align: left;
+}
+
+.card2 h2 {
+  margin-bottom: 0.8rem;
+}
+
+.card2 h3 {
+  font-size: 1rem;
+  margin-bottom: 0.1rem;
+}
+
+img {
+  height: 260px;
+  width: 260px;
+  border-radius: 2rem;
+}

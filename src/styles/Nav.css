@@ -1,6 +1,5 @@
 nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   position: relative;
   left: 0;
@@ -16,6 +15,12 @@ nav {
 nav h3 {
   color: rgba(126, 78, 182, 0.938);
   font-size: 2.5rem;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
 }
 
 @media screen and (max-width: 768px) {
