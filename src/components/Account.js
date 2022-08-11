@@ -1,10 +1,9 @@
 import "../styles/Button.css";
 import { Link } from "react-router-dom";
 
-function Account(props) {
-  /* Render display account button */
-  const renderAccountButton = () => {
-    return (
+function Account() {
+  return (
+    <div className="btnContainer" id="accountBtnContainer">
       <Link to="/account" className="link">
         <button className="account-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -13,12 +12,6 @@ function Account(props) {
           <span>Account</span>
         </button>
       </Link>
-    );
-  };
-
-  return (
-    <div className="btnContainer" id="accountBtnContainer">
-      {renderAccountButton()}
     </div>
   );
 }

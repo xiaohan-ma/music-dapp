@@ -42,5 +42,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "- Allows user to connect their Metamask wallet to the site\r - Application allows users to purchase/mint music from artists in the form of an ERC721 token\r - Application displays user's ERC721 token purchased from the platform\r - Application enables the purchased music to be played, transferred and added to customisable playlists",
+  "main": "index.js",
+  "devDependencies": {
+    "hardhat": "^2.9.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaohan-ma/music-dapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaohan-ma/music-dapp/issues"
+  },
+  "homepage": "https://github.com/xiaohan-ma/music-dapp#readme"
 }

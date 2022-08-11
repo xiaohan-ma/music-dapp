@@ -10,7 +10,7 @@ function Login(props) {
   };
 
   const disconnectWalletPressed = () => {
-    props.setStatus("");
+    props.setStatus(false);
     props.setWallet("");
   };
 
@@ -69,6 +69,7 @@ function Login(props) {
       props.setWallet(address);
       props.setStatus(status);
     }
+
     fetchData();
     addWalletListener();
   }, []);

@@ -1,6 +1,7 @@
-/* Connect/Disconnect button */
+/* All button styles*/
 .btnContainer .connect-btn,
-.account-btn {
+.account-btn,
+.upload-btn {
   margin: 0;
   border-radius: 0.4rem;
   color: rgba(126, 78, 182, 0.938);
@@ -11,10 +12,6 @@
   cursor: pointer;
   padding: 0.7rem 1.4rem;
   border: 0 solid #e5e7eb;
-}
-
-.btnContainer .connect-btn {
-  margin-left: 1rem;
 }
 
 .btnContainer button:hover {
@@ -34,6 +31,11 @@
   font-size: 0.95rem;
   font-weight: bold;
   letter-spacing: 0.03rem;
+}
+
+.btnContainer .connect-btn,
+.account-btn {
+  margin-left: 1rem;
 }
 
 @media screen and (max-width: 768px) {
