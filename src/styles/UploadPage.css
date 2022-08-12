@@ -1,0 +1,57 @@
+/** Upload Section Container **/
+.uploadSection {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+/** General styles **/
+.uploadForm div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 1.5rem;
+}
+
+.uploadForm label {
+  font-size: 1.2rem;
+  color: #2d2d42;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input,
+textarea {
+  border-radius: 1rem;
+  border: 2px solid rgba(224, 224, 230, 0.801);
+  padding-left: 0.5rem;
+  font-size: 1.3rem;
+  max-width: 100%;
+}
+
+/** Form input styles **/
+#name {
+  width: 30rem;
+  height: 2.3rem;
+}
+#desc {
+  width: 30rem;
+  height: 10rem;
+}
+#quantity {
+  width: 4rem;
+  height: 2rem;
+}
+#price {
+  width: 4rem;
+  height: 2rem;
+}
+
+.create-btn {
+  margin-top: 1rem;
+}

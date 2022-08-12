@@ -25,6 +25,6 @@ nav h3 {
 
 @media screen and (max-width: 768px) {
   nav {
-    padding: 0rem 2rem;
+    padding: 0rem 0.3rem;
   }
 }

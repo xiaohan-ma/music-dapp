@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
+import UploadPage from "./pages/UploadPage";
 import Protected from "./utils/protected";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
@@ -36,6 +37,7 @@ function App() {
             </Protected>
           }
         />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="*" element={() => "404 Page Not Found"} />
       </Routes>
       <Footer />
