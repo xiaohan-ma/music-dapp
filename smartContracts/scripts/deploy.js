@@ -5,7 +5,14 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-async function main() {
+const main = async () => {
+  // Grab address of contract deployer
+  const [deployer] = await hre.ethers.getSigners();
+  const accountBalance = await deployer.getBalance();
+
+  console.log("Contract deployed by deployer:", deployer.address);
+  console.log("Deployer account balance:", accountBalance.toString());
+
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
@@ -14,13 +21,15 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
 
-  await greeter.deployed();
-
-  console.log("Greeter deployed to:", greeter.address);
-}
+  // Compile contract and generate files needed under artifacts
+  const musicContractFactory = await hre.ethers.getContractFactory("MusicNFT");
+  // Hardhat creates a local Eth network for the contract
+  const musicContract = await musicContractFactory.deploy();
+  // Wait for deployment
+  await musicContract.deployed();
+  console.log("Contract deploy to address:", musicContract.address);
+};
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.

@@ -1,8 +1,21 @@
 import "../styles/ProfilePage.css";
 import MusicCard2 from "../components/MusicCard2";
 import ProfileIcon from "../image/moonbird.png";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 
 const ProfilePage = (props) => {
+  const [tokens, setTokens] = useState(false);
+
+  /** Display tokens owned by user */
+  async function displayOwnedTokens() {}
+
+  useEffect(() => {
+    if (!tokens) {
+      displayOwnedTokens();
+    }
+  });
+
   return (
     <div className="container">
       <div className="profileSection">

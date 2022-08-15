@@ -1,23 +1,24 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "../node_modules/hardhat/console.sol";
-import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/reentrancyguard.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract MusicNFT is ERC721URIStorage {
+contract MusicNFT is Ownable, ERC721URIStorage, ReentrancyGuard {
 
    using Counters for Counters.Counter;
    Counters.Counter private _tokenIds;
+   uint256 public totalSupply;
    uint256 private _price;
    string _tokenURI;
 
-   constructor() ERC721("MusicNFT", "AUDIO"){
-
-   }
+   constructor() ERC721("MusicNFT", "AUDIO"){}
    function mint(uint256 num) public payable{
 
-        //Ensure correct eth amount is sent for mint
+        require(totalSupply);
         require(msg.value >= _price * num, "Incorrect ether amount sent");
 
         for(uint256 i; i<num; i++){
