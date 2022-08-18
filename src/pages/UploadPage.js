@@ -80,7 +80,7 @@ const UploadPage = () => {
               type="text"
               name="name"
               id="name"
-              placeholder="Music name"
+              placeholder="What are you most interested in about this role?"
               onChange={(e) => setName(e.target.value)}
               required
             />
