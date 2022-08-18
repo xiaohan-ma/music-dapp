@@ -2,7 +2,7 @@ import "../styles/UploadPage.css";
 import { useState } from "react";
 import { Buffer } from "buffer";
 import { create } from "ipfs-http-client";
-
+import { Contract, ethers } from "ethers";
 /**
  * Infura IPFS API access
  */
@@ -20,7 +20,7 @@ const client = create({
   },
 });
 
-const UploadPage = () => {
+const UploadPage = (props) => {
   const [image, setImage] = useState("");
   const [price, setPrice] = useState(null);
   const [media, setMedia] = useState("");
@@ -57,13 +57,44 @@ const UploadPage = () => {
   }
 
   /** Mint NFT function */
-  async function mintNFT() {
+  async function createToken() {
     if (!image || !price || !media || !name || !description || !quantity)
       return;
     try {
       const result = await client.add(
         JSON.stringify({ name, image, media, description, quantity, price })
       );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /* Mint token then list on platform */
+  async function mintListToken(result) {
+    try {
+      const metadata = `https://otofy.infura-ipfs.io/ipfs/${result.path}`;
+
+      const tokenPrice = ethers.utils.parseUnits(price, "ether");
+      const tokenQuantity = ethers.BigNumber.from(quantity);
+      let listPrice = await props.platformContract.getTokenPrice();
+      listPrice = listPrice.toString();
+
+      const transaction = await props.platformContract.mintToken(
+        metadata,
+        tokenPrice,
+        tokenQuantity
+      );
+
+      await transaction.wait();
+
+      console.log("Token minted!");
+
+      setName("");
+      setPrice(null);
+      setMedia("");
+      setImage("");
+      setQuantity(null);
+      setDescription("");
     } catch (error) {
       console.log(error);
     }
@@ -138,7 +169,7 @@ const UploadPage = () => {
               required
             />
           </div>
-          <button className="create-btn" onClick={mintNFT}>
+          <button className="create-btn" onClick={createToken}>
             Create
           </button>
         </form>

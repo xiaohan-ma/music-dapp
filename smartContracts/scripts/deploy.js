@@ -4,6 +4,7 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const fs = require("fs");
 
 const main = async () => {
   // Grab address of contract deployer
@@ -29,6 +30,14 @@ const main = async () => {
   // Wait for deployment
   await otofyContract.deployed();
   console.log("Contract deploy to address:", otofyContract.address);
+
+  // Gather contract data into specified format
+  const data = {
+    address: otofyContract.address,
+    abi: JSON.parse(otofyContract.interface.format("json")),
+  };
+  // Create file containing contract address and abi to frontend location
+  fs.writeFileSync("../src/json/OtofyMarketplace.json", JSON.stringify(data));
 };
 
 // We recommend this pattern to be able to use async/await everywhere

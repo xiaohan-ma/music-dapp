@@ -4,15 +4,32 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import UploadPage from "./pages/UploadPage";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ethers, Signer } from "ethers";
+import PlatformContract from "../json/OtofyMarketplace.json";
 
-function App() {
+const App = () => {
   /** State variables */
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState(false);
   const [playing, isPlaying] = useState(false);
-  const [marketContract, setMarketContract] = useState({});
+  const [platformContract, setPlatformContract] = useState({});
+
+  async function loadContract() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const otofyContract = new ethers.Contract(
+      PlatformContract.address,
+      PlatformContract.abi,
+      signer
+    );
+    setPlatformContract(otofyContract);
+  }
+
+  useEffect(() => {
+    loadContract();
+  }, []);
 
   return (
     <div className="App">
@@ -32,12 +49,20 @@ function App() {
         ) : (
           <Route path="/" exact element={<Home />} />
         )}
-        <Route path="/upload" element={<UploadPage />} />
+        <Route
+          path="/upload"
+          element={
+            <UploadPage
+              platformContract={platformContract}
+              walletAddress={walletAddress}
+            />
+          }
+        />
         <Route path="*" element={() => "404 Page Not Found"} />
       </Routes>
       <Footer />
     </div>
   );
-}
+};
 
 export default App;
