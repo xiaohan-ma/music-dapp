@@ -5,8 +5,9 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract OtofyMarketplace is ERC721URIStorage{
+contract OtofyMarketplace is ERC721URIStorage, Ownable{
    using Counters for Counters.Counter;
    Counters.Counter private _tokenIds;
    address payable contractOwner;
@@ -20,22 +21,22 @@ contract OtofyMarketplace is ERC721URIStorage{
     bool isListed;
    }
 
-   event TokenIsListed {
-    uint256 indexed tokenId;
-    address indexed owner;
-    address indexed seller;
-    uint256 price;
-    bool isListed;
-   }
+   event TokenIsListed (
+    uint256 indexed tokenId,
+    address indexed contractOwner,
+    address indexed seller,
+    uint256 price,
+    bool isListed
+   );
 
-   event TokenIsBought {
-    uint256 indexed tokenId;
-    address buyer;
-    address indexed seller;
-    uint256 price;
-    bool isListed;
-   }
-` 
+   event TokenIsBought (
+    uint256 indexed tokenId,
+    address buyer,
+    address indexed seller,
+    uint256 price,
+    bool isListed
+   );
+
    mapping(uint256 => MarketToken) private items;
 
    constructor() ERC721("OtofyMarketplace", "OTOFY"){
@@ -60,8 +61,8 @@ contract OtofyMarketplace is ERC721URIStorage{
     uint generalTotal = _tokenIds.current();
     uint userTotal;
     
-    for(uint i; i<total; i++){
-        if(items[i].owner == msg.sender || items[i].seller == msg.sender){
+    for(uint i; i<generalTotal; i++){
+        if(items[i].contractOwner == msg.sender || items[i].seller == msg.sender){
             userTotal += 1;
         }
     }
@@ -71,7 +72,7 @@ contract OtofyMarketplace is ERC721URIStorage{
     if(userTotal == 0) return tokens;
 
     for(uint i; i<generalTotal; i++){
-        if(items[i].owner == msg.sender || items[i].seller == msg.sender){
+        if(items[i].contractOwner == msg.sender || items[i].seller == msg.sender){
             MarketToken storage currentToken = items[i];
             tokens[i] = currentToken;
         }
@@ -95,22 +96,11 @@ contract OtofyMarketplace is ERC721URIStorage{
 
         /* Approve the new owner address to transfer the token */
         approve(address(this), _tokenId);
-    `   
+    
         /* Send revenue accordingly */
         payable(seller).transfer(msg.value);
-        payable(owner).transfer(royaltyFee);
+        payable(contractOwner).transfer(royaltyFee);
         
-   }
-
-   /* Update token price - only callable by owner of that token */
-   function updatePrice(uint256 _price) public payable {
-        require(owner == msg.sender, "Only owner may update the price of this token");
-        price = _price;
-   }
-
-   /* Retrieve price which token is listed at */
-   function getTokenPrice() public view returns(uint256) {
-        return price;
    }
 
    /* Retrieve token through its token id */
@@ -124,8 +114,13 @@ contract OtofyMarketplace is ERC721URIStorage{
         return items[currTokenId];
    }
 
+    /* Retrieve royalty fee of marketplace*/
+   function getTokenPrice() public view returns(uint256) {
+        return royaltyFee;
+   }
+
    /* Update royalty fee of marketplace*/
-    function updateRoyalty(uint256 _royaltyFee) external onlyOwner {
+    function updateRoyalty(uint256 _royaltyFee) public onlyOwner {
         royaltyFee = _royaltyFee;
     }
 
@@ -134,7 +129,7 @@ contract OtofyMarketplace is ERC721URIStorage{
 
         require(_price >= 0, "Make sure price is at least 0 ether");
         require(msg.value >= royaltyFee * _quantity, "Not enough eth to pay platform fees");
-        require(quantity > 0 quantity <= 1000, "Quantity has to be more than zero but less or equal to 1000")
+        require(_quantity > 0, "Quantity has to be more than zero ");
 
         for(uint256 i; i<_quantity;i++){
             uint256 newItemId = _tokenIds.current();
@@ -148,8 +143,8 @@ contract OtofyMarketplace is ERC721URIStorage{
     }
 
     /* List minted token on platform */
-    function listToken(uint256 _tokenId. uint256 _price) private {
-        items[_tokenId] = MarketToken(payable (address(this)) payable(msg.sender), _price, _quantity, true);
+    function listToken(uint256 _tokenId, uint256 _price) private {
+        items[_tokenId] = MarketToken(payable(address(this)), payable(msg.sender), _price, _tokenId, true);
 
         _transfer(msg.sender, address(this), _tokenId);
 
@@ -158,7 +153,7 @@ contract OtofyMarketplace is ERC721URIStorage{
 
     /* Withdraw funds */
     function withdrawAll() public payable onlyOwner {
-        require(payable(owner).send(address(this).balance));
+        require(payable(contractOwner).send(address(this).balance));
     }
 
 

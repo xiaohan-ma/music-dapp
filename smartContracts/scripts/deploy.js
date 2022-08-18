@@ -23,12 +23,12 @@ const main = async () => {
   // We get the contract to deploy
 
   // Compile contract and generate files needed under artifacts
-  const musicContractFactory = await hre.ethers.getContractFactory("MusicNFT");
+  const otofyFactory = await hre.ethers.getContractFactory("OtofyMarketplace");
   // Hardhat creates a local Eth network for the contract
-  const musicContract = await musicContractFactory.deploy();
+  const otofyContract = await otofyFactory.deploy();
   // Wait for deployment
-  await musicContract.deployed();
-  console.log("Contract deploy to address:", musicContract.address);
+  await otofyContract.deployed();
+  console.log("Contract deploy to address:", otofyContract.address);
 };
 
 // We recommend this pattern to be able to use async/await everywhere
