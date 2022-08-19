@@ -27,10 +27,14 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {},
+    hardhat: {
+      chainId: 1337,
+    },
     goerli: {
       url: `https://goerli.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [GOERLI_PRIVATE_KEY],
+      gas: 2100000,
+      gasPrice: 8000000000,
     },
   },
   solidity: {

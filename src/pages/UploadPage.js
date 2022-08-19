@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Buffer } from "buffer";
 import { create } from "ipfs-http-client";
 import { Contract, ethers } from "ethers";
+import PlatformContract from "../json/OtofyMarketplace.json";
 /**
  * Infura IPFS API access
  */
@@ -24,6 +25,7 @@ const UploadPage = (props) => {
   const [image, setImage] = useState("");
   const [price, setPrice] = useState(null);
   const [media, setMedia] = useState("");
+  const [artist, setArtist] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(null);
@@ -58,38 +60,69 @@ const UploadPage = (props) => {
 
   /** Mint NFT function */
   async function createToken() {
-    if (!image || !price || !media || !name || !description || !quantity)
+    if (
+      !image ||
+      !price ||
+      !media ||
+      !name ||
+      !description ||
+      !quantity ||
+      !artist
+    )
       return;
+    const data = JSON.stringify({
+      name,
+      image,
+      media,
+      description,
+      price,
+      artist,
+    });
     try {
-      const result = await client.add(
-        JSON.stringify({ name, image, media, description, quantity, price })
-      );
+      const result = await client.add(data);
+      const metadata = `https://otofy.infura-ipfs.io/ipfs/${result.path}`;
+      console.log("Uploaded metadata to ipfs ", metadata);
+      return metadata;
     } catch (error) {
       console.log(error);
     }
   }
 
   /* Mint token then list on platform */
-  async function mintListToken(result) {
+  async function mintListToken(e) {
+    e.preventDefault();
     try {
-      const metadata = `https://otofy.infura-ipfs.io/ipfs/${result.path}`;
+      if (window.ethereum) {
+        const url = await createToken();
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const otofyContract = new ethers.Contract(
+          PlatformContract.address,
+          PlatformContract.abi,
+          signer
+        );
 
-      const tokenPrice = ethers.utils.parseUnits(price, "ether");
-      const tokenQuantity = ethers.BigNumber.from(quantity);
-      let listPrice = await props.platformContract.getTokenPrice();
-      listPrice = listPrice.toString();
+        const tokenPrice = ethers.utils.parseUnits(price, "ether");
+        const tokenQuantity = ethers.BigNumber.from(quantity);
+        let listPrice = await otofyContract.getTokenPrice();
+        listPrice = listPrice.toString();
 
-      const transaction = await props.platformContract.mintToken(
-        metadata,
-        tokenPrice,
-        tokenQuantity
-      );
+        let process = await otofyContract.mintToken(
+          url,
+          tokenPrice,
+          tokenQuantity,
+          { value: listPrice }
+        );
 
-      await transaction.wait();
+        await process.wait();
 
-      console.log("Token minted!");
+        console.log("Token minted!");
+      } else {
+        console.log("Ethereum object doesn't exist");
+      }
 
       setName("");
+      setArtist("");
       setPrice(null);
       setMedia("");
       setImage("");
@@ -111,8 +144,19 @@ const UploadPage = (props) => {
               type="text"
               name="name"
               id="name"
-              placeholder="What are you most interested in about this role?"
+              placeholder="Music title"
               onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="artist-sec">
+            <label htmlFor="artist">Artist Name</label>
+            <input
+              type="text"
+              name="artist"
+              id="artist"
+              placeholder="Artist name"
+              onChange={(e) => setArtist(e.target.value)}
               required
             />
           </div>
@@ -169,7 +213,7 @@ const UploadPage = (props) => {
               required
             />
           </div>
-          <button className="create-btn" onClick={createToken}>
+          <button className="create-btn" onClick={mintListToken}>
             Create
           </button>
         </form>

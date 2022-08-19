@@ -51,6 +51,10 @@ textarea {
   width: 4rem;
   height: 2rem;
 }
+#artist {
+  width: 30rem;
+  height: 2.3rem;
+}
 
 .create-btn {
   margin-top: 1rem;

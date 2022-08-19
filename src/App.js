@@ -6,8 +6,8 @@ import ProfilePage from "./pages/ProfilePage";
 import UploadPage from "./pages/UploadPage";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ethers, Signer } from "ethers";
-import PlatformContract from "../json/OtofyMarketplace.json";
+import { ethers } from "ethers";
+import PlatformContract from "./json/OtofyMarketplace.json";
 
 const App = () => {
   /** State variables */
@@ -15,6 +15,11 @@ const App = () => {
   const [status, setStatus] = useState(false);
   const [playing, isPlaying] = useState(false);
   const [platformContract, setPlatformContract] = useState({});
+
+  useEffect(() => {
+    !platformContract && loadContract();
+    console.log(platformContract);
+  });
 
   async function loadContract() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -27,10 +32,6 @@ const App = () => {
     setPlatformContract(otofyContract);
   }
 
-  useEffect(() => {
-    loadContract();
-  }, []);
-
   return (
     <div className="App">
       <Nav
@@ -39,7 +40,11 @@ const App = () => {
         walletAddress={walletAddress}
       />
       <Routes>
-        <Route path="/" exact element={<Home />} />
+        <Route
+          path="/"
+          exact
+          element={<Home platformContract={platformContract} />}
+        />
 
         {walletAddress !== "" ? (
           <Route

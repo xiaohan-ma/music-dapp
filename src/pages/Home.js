@@ -6,12 +6,47 @@
 //connectwallet
 //searchbar?
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
 import PromoCover from "../image/moonbird.png";
 import MusicCard from "../components/MusicCard";
+import { ethers } from "ethers";
 
-const Home = () => {
+const Home = (props) => {
+  const [tokens, getTokens] = useState(null);
+
+  /** Retrieve all tokens listed on platform */
+  async function getAllTokens() {
+    const process = await props.platformContract.getAllTokens();
+
+    const allTokens = await Promise.all(
+      process.map(async (t) => {
+        const tokenURI = await props.platformContract.tokenURI(t.tokenId);
+        const response = await fetch(tokenURI + ".json");
+        const metadata = await response.json();
+
+        const price = ethers.utils.formatUnits(t.price.toString(), "ether");
+
+        const token = {
+          tokenId: t.tokenId.toNumber(),
+          artist: metadata.artist,
+          seller: t.seller,
+          owner: t.owner,
+          price,
+          image: metadata.image,
+          media: metadata.media,
+          description: metadata.description,
+        };
+        return token;
+      })
+    );
+    getTokens(allTokens);
+  }
+
+  useEffect(() => {
+    !tokens && getAllTokens();
+  }, []);
+
   return (
     <div className="container">
       <div className="promoSection">
