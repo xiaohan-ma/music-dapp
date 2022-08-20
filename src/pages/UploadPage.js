@@ -1,27 +1,10 @@
 import "../styles/UploadPage.css";
 import { useState } from "react";
-import { Buffer } from "buffer";
-import { create } from "ipfs-http-client";
 import { Contract, ethers } from "ethers";
+import { pinFileToIpfs, pinJSONToIpfs } from "../utils/pinata";
 import PlatformContract from "../json/OtofyMarketplace.json";
-/**
- * Infura IPFS API access
- */
-const projectId = process.env.REACT_APP_INFURA_PROJECT_ID;
-const projectSecret = process.env.REACT_APP_INFURA_PROJECT_SECRET;
-const auth =
-  "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
 
-const client = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-  headers: {
-    authorization: auth,
-  },
-});
-
-const UploadPage = (props) => {
+const UploadPage = () => {
   const [image, setImage] = useState("");
   const [price, setPrice] = useState(null);
   const [media, setMedia] = useState("");
@@ -36,9 +19,9 @@ const UploadPage = (props) => {
     const file = event.target.files[0];
 
     try {
-      const result = await client.add(file);
+      const result = await pinFileToIpfs(file);
       console.log(result);
-      setImage(`https://otofy.infura-ipfs.io/ipfs/${result.path}`);
+      setImage(result.pinataURL);
     } catch (error) {
       console.log(error);
     }
@@ -50,9 +33,9 @@ const UploadPage = (props) => {
     const file = event.target.files[0];
 
     try {
-      const result = await client.add(file);
+      const result = await pinFileToIpfs(file);
       console.log(result);
-      setMedia(`https://otofy.infura-ipfs.io/ipfs/${result.path}`);
+      setMedia(result.pinataURL);
     } catch (error) {
       console.log(error);
     }
@@ -70,19 +53,18 @@ const UploadPage = (props) => {
       !artist
     )
       return;
-    const data = JSON.stringify({
+    const json = {
       name,
       image,
       media,
       description,
       price,
       artist,
-    });
+    };
     try {
-      const result = await client.add(data);
-      const metadata = `https://otofy.infura-ipfs.io/ipfs/${result.path}`;
-      console.log("Uploaded metadata to ipfs ", metadata);
-      return metadata;
+      const result = await pinJSONToIpfs(json);
+      console.log(result);
+      return result;
     } catch (error) {
       console.log(error);
     }

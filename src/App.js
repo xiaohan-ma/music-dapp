@@ -54,15 +54,7 @@ const App = () => {
         ) : (
           <Route path="/" exact element={<Home />} />
         )}
-        <Route
-          path="/upload"
-          element={
-            <UploadPage
-              platformContract={platformContract}
-              walletAddress={walletAddress}
-            />
-          }
-        />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="*" element={() => "404 Page Not Found"} />
       </Routes>
       <Footer />

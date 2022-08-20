@@ -11,32 +11,43 @@ import "../styles/Home.css";
 import PromoCover from "../image/moonbird.png";
 import MusicCard from "../components/MusicCard";
 import { ethers } from "ethers";
-
-const Home = (props) => {
-  const [tokens, getTokens] = useState(null);
+import axios from "axios";
+import PlatformContract from "../json/OtofyMarketplace.json";
+const Home = () => {
+  const [tokens, getTokens] = useState([]);
 
   /** Retrieve all tokens listed on platform */
   async function getAllTokens() {
-    const process = await props.platformContract.getAllTokens();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const otofyContract = new ethers.Contract(
+      PlatformContract.address,
+      PlatformContract.abi,
+      signer
+    );
+
+    const process = await otofyContract.getAllTokens();
 
     const allTokens = await Promise.all(
       process.map(async (t) => {
-        const tokenURI = await props.platformContract.tokenURI(t.tokenId);
-        const response = await fetch(tokenURI + ".json");
-        const metadata = await response.json();
-
+        const tokenURI = await otofyContract.tokenURI(t.tokenId);
+        let metadata = await axios.get(tokenURI);
+        metadata = metadata.data;
+        console.log(metadata);
+        console.log(t);
         const price = ethers.utils.formatUnits(t.price.toString(), "ether");
 
-        const token = {
+        let token = {
+          price,
           tokenId: t.tokenId.toNumber(),
           artist: metadata.artist,
           seller: t.seller,
           owner: t.owner,
-          price,
           image: metadata.image,
           media: metadata.media,
           description: metadata.description,
         };
+        console.log(token);
         return token;
       })
     );
@@ -44,7 +55,7 @@ const Home = (props) => {
   }
 
   useEffect(() => {
-    !tokens && getAllTokens();
+    getAllTokens();
   }, []);
 
   return (
@@ -67,11 +78,9 @@ const Home = (props) => {
           <p>Find new artists, songs and albums</p>
         </div>
         <div className="cardContainer">
-          <MusicCard />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard />
+          {tokens.map((value, index) => {
+            return <MusicCard data={value} key={index} />;
+          })}
         </div>
       </div>
     </div>
