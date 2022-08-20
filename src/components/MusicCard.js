@@ -11,7 +11,7 @@ function MusicCard(data) {
       <div className="musicDesc">
         <h3>{data.data.artist}</h3>
         <h2>{data.data.name}</h2>
-        <button className="mint-btn">Mint Music</button>
+        <button className="mint-btn">Purchase Music</button>
       </div>
     </div>
   );

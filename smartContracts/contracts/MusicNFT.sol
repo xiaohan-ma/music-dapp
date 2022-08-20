@@ -15,6 +15,7 @@ contract MusicNFT is Ownable, ERC721URIStorage {
    string _tokenURI;
 
    constructor() ERC721("MusicNFT", "AUDIO"){}
+
    function mint(uint256 num) public payable{
         require(msg.value >= _price * num, "Incorrect ether amount sent");
 

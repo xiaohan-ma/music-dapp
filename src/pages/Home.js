@@ -6,7 +6,7 @@
 //connectwallet
 //searchbar?
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Home.css";
 import PromoCover from "../image/moonbird.png";
 import MusicCard from "../components/MusicCard";
@@ -26,15 +26,16 @@ const Home = () => {
       signer
     );
 
-    const process = await otofyContract.getAllTokens();
+    let process = await otofyContract.getAllTokens();
 
     const allTokens = await Promise.all(
       process.map(async (t) => {
-        const tokenURI = await otofyContract.tokenURI(t.tokenId);
-        let metadata = await axios.get(tokenURI);
+        const uri = await otofyContract.tokenURI(t.tokenId);
+        let metadata = await axios.get(uri);
+
         metadata = metadata.data;
         console.log(metadata);
-        console.log(t);
+        console.log(t.tokenId);
         const price = ethers.utils.formatUnits(t.price.toString(), "ether");
 
         let token = {
@@ -42,7 +43,8 @@ const Home = () => {
           tokenId: t.tokenId.toNumber(),
           artist: metadata.artist,
           seller: t.seller,
-          owner: t.owner,
+          name: metadata.name,
+          owner: t.contractOwner,
           image: metadata.image,
           media: metadata.media,
           description: metadata.description,
@@ -53,11 +55,9 @@ const Home = () => {
     );
     getTokens(allTokens);
   }
-
   useEffect(() => {
     getAllTokens();
   }, []);
-
   return (
     <div className="container">
       <div className="promoSection">

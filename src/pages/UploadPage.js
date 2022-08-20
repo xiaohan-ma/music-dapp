@@ -63,8 +63,8 @@ const UploadPage = () => {
     };
     try {
       const result = await pinJSONToIpfs(json);
-      console.log(result);
-      return result;
+      console.log(result.pinataURL);
+      return result.pinataURL;
     } catch (error) {
       console.log(error);
     }
