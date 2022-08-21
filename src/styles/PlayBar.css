@@ -1,0 +1,117 @@
+/** Playbar container **/
+.playbar {
+  padding: 0rem 1rem;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5.8rem;
+  background-color: rgb(255, 255, 255);
+  border: 0 solid #dddfe5;
+  border-top-width: 1px;
+  border-color: rgba(45, 45, 66, 0.08);
+  color: rgba(0, 0, 0, 0.368);
+  z-index: 100;
+}
+
+/** Playbar general style **/
+h3 {
+  color: rgba(0, 0, 0, 0.368);
+}
+
+span {
+  font-size: 0.85rem;
+}
+
+.playbar svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: #2d2d42;
+}
+
+.playbar button {
+  padding: 0.2rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.playbar button:hover svg {
+  fill: #323247b1;
+}
+
+.playbar input {
+  height: 1px;
+  cursor: pointer;
+}
+
+/** Playing information - left section **/
+.playing-info-sec {
+  display: flex;
+  width: 20%;
+  padding: 0 1rem;
+}
+
+/** Player controls - mid section **/
+.player-controls-sec {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 60%;
+  padding: 0 1rem;
+}
+
+#control-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.9rem;
+  gap: 1.5rem;
+}
+
+#play svg {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+#timestamp-bar {
+  margin-top: 0.1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#timestamp-bar input {
+  width: 90%;
+}
+
+/** Volume controls - last section **/
+.volume-controls-sec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 20%;
+  padding: 0 1rem;
+}
+
+#volume1-btn {
+  margin-right: 0.7rem;
+}
+
+#volume-bar {
+  width: 50%;
+}
+
+/** Responsive **/
+@media screen and (max-width: 768px) {
+  .playbar {
+    padding: 0rem 1rem;
+  }
+}

@@ -6,8 +6,9 @@ nav {
   right: 0;
   top: 0;
   padding: 0rem 3rem;
-  height: 5rem;
+  height: 5.2rem;
   background-color: #ffffff;
+  border: 0 solid #dddfe5;
   border-bottom-width: 1px;
   border-color: rgba(45, 45, 66, 0.08);
 }
