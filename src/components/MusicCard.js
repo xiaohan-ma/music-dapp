@@ -1,4 +1,5 @@
 import "../styles/MusicCard.css";
+import { buyToken } from "../utils/contract";
 
 function MusicCard(props) {
   return (
@@ -26,7 +27,9 @@ function MusicCard(props) {
       <div className="musicDesc">
         <h3>{props.data.artist}</h3>
         <h2>{props.data.name}</h2>
-        <button className="mint-btn">Purchase Music</button>
+        <button className="mint-btn" onClick={() => buyToken(props.data)}>
+          Purchase Music
+        </button>
       </div>
     </div>
   );

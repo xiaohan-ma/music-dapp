@@ -85,3 +85,21 @@ export const retrieveOwnTokens = async () => {
   console.log(userTokens);
   return userTokens;
 };
+
+export const buyToken = async (token) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const otofyContract = new ethers.Contract(
+    PlatformContract.address,
+    PlatformContract.abi,
+    signer
+  );
+
+  const tokenPrice = ethers.utils.parseUnits(token.price, "ether");
+
+  let process = await otofyContract.buyToken(token.tokenId, {
+    value: tokenPrice,
+  });
+
+  await process.wait();
+};
