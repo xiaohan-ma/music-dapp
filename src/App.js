@@ -5,7 +5,7 @@ import PlayBar from "./components/PlayBar";
 import ProfilePage from "./pages/ProfilePage";
 import UploadPage from "./pages/UploadPage";
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { loadContract, retrieveAllTokens } from "./utils/contract";
 
 const App = () => {
@@ -20,13 +20,10 @@ const App = () => {
     JSON.parse(localStorage.getItem("allTokens")) || []
   );
   const [currentSong, setCurrentSong] = useState();
-  const [songIndex, setSongIndex] = useState(0);
-  const [songProgress, setSongProgress] = useState(0);
 
-  const audioRef = useRef(new Audio(tokens[0].media));
-  const intervalRef = useRef();
-  const isReady = useRef(false);
-
+  /** Obtain platform contract
+   * Set to localstorage for ease in future uses
+   */
   async function getContract() {
     const contract = await loadContract();
     setPlatformContract(contract);
@@ -34,7 +31,6 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("platformContract", JSON.stringify(platformContract));
   }, [platformContract]);
-
   useEffect(() => {
     const contract = JSON.parse(localStorage.getItem("platformContract"));
     if (contract) {
@@ -45,15 +41,16 @@ const App = () => {
     console.log(platformContract);
   }, []);
 
+  /** Obtain all platform tokens from contract
+   * Set to localstorage for ease in future uses
+   */
   async function getAllTokens() {
     const allTokens = await retrieveAllTokens();
     getTokens(allTokens);
   }
-
   useEffect(() => {
     localStorage.setItem("allTokens", JSON.stringify(tokens));
   }, [tokens]);
-
   useEffect(() => {
     const tokens = JSON.parse(localStorage.getItem("allTokens"));
     if (tokens) {
@@ -61,17 +58,8 @@ const App = () => {
     } else {
       getAllTokens();
     }
-
     console.log(tokens);
   }, []);
-
-  useEffect(() => {
-    if (playing) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-  }, [playing]);
 
   return (
     <div className="App">

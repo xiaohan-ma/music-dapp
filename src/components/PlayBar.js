@@ -2,7 +2,50 @@ import "../styles/PlayBar.css";
 import { useState, useEffect, useRef } from "react";
 
 const PlayBar = (props) => {
-  /**
+  const [songIndex, setSongIndex] = useState(0);
+  const [songProgress, setSongProgress] = useState(0);
+
+  const audioRef = useRef(new Audio(props.tokens[songIndex].media));
+  const intervalRef = useRef();
+  const isReady = useRef(false);
+
+  const currentPercentage = audioRef.current.duration
+    ? `${(songProgress / audioRef.current.duration) * 100}%`
+    : "0%";
+  const timebarStyle = `
+-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))
+`;
+
+  /** Audio player to check whether paused or playing */
+  useEffect(() => {
+    if (props.playing) {
+      audioRef.current.play();
+      beginTimer();
+    } else {
+      clearInterval(intervalRef.current);
+      audioRef.current.pause();
+    }
+  }, [props.playing]);
+  /** Use effect to check on interval */
+  useEffect(() => {
+    return () => {
+      audioRef.current.pause();
+      clearInterval(intervalRef.current);
+    };
+  }, []);
+  /** Use effect to check for song index changes */
+  useEffect(() => {
+    audioRef.current.pause();
+    audioRef.current = new Audio(props.tokens[songIndex].media);
+    setSongProgress(audioRef.current.currentTime);
+
+    if (isReady.current) {
+      audioRef.current.play();
+      props.isPlaying(true);
+      beginTimer();
+    }
+  }, [songIndex]);
+
   function prevSong() {
     if (songIndex - 1 < 0) {
       setSongIndex(props.tokens.length - 1);
@@ -12,25 +55,49 @@ const PlayBar = (props) => {
   }
 
   function nextSong() {
-    if (songIndex < tokens.length - 1) {
+    if (songIndex < props.tokens.length - 1) {
       setSongIndex(songIndex + 1);
     } else {
       setSongIndex(0);
     }
   }
-*/
 
-  /** Play/pause song according to button click */
+  function beginTimer() {
+    clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (audioRef.current.ended) {
+        nextSong();
+      } else {
+        setSongProgress(audioRef.current.currentTime);
+      }
+    }, [1000]);
+  }
 
-  /** Mute btn
-   * <button id="volume2-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M301.2 34.85c-11.5-5.188-25.02-3.122-34.44 5.253L131.8 160H48c-26.51 0-48 21.49-48 47.1v95.1c0 26.51 21.49 47.1 48 47.1h83.84l134.9 119.9c5.984 5.312 13.58 8.094 21.26 8.094c4.438 0 8.972-.9375 13.17-2.844c11.5-5.156 18.82-16.56 18.82-29.16V64C319.1 51.41 312.7 40 301.2 34.85zM513.9 255.1l47.03-47.03c9.375-9.375 9.375-24.56 0-33.94s-24.56-9.375-33.94 0L480 222.1L432.1 175c-9.375-9.375-24.56-9.375-33.94 0s-9.375 24.56 0 33.94l47.03 47.03l-47.03 47.03c-9.375 9.375-9.375 24.56 0 33.94c9.373 9.373 24.56 9.381 33.94 0L480 289.9l47.03 47.03c9.373 9.373 24.56 9.381 33.94 0c9.375-9.375 9.375-24.56 0-33.94L513.9 255.1z"/></svg></button>
-   */
+  function onTrack(time) {
+    clearInterval(intervalRef.current);
+    audioRef.current.currentTime = time;
+    setSongProgress(audioRef.current.currentTime);
+  }
+
+  function trackScroll() {
+    if (!props.playing) {
+      props.isPlaying(true);
+    }
+    beginTimer();
+  }
+
+  function displayTime() {
+    let time = Math.round(audioRef.current.currentTime);
+    let minutes = Math.floor(time / 60);
+    let seconds = Math.floor(time - minutes * 60);
+    return minutes + ":" + seconds;
+  }
   return (
     <div className="playbar">
       <div className="playing-info-sec"></div>
       <div className="player-controls-sec">
         <div id="control-btns">
-          <button id="previous">
+          <button id="previous" onClick={() => prevSong()}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
               <path d="M31.1 64.03c-17.67 0-31.1 14.33-31.1 32v319.9c0 17.67 14.33 32 32 32C49.67 447.1 64 433.6 64 415.1V96.03C64 78.36 49.67 64.03 31.1 64.03zM267.5 71.41l-192 159.1C67.82 237.8 64 246.9 64 256c0 9.094 3.82 18.18 11.44 24.62l192 159.1c20.63 17.12 52.51 2.75 52.51-24.62v-319.9C319.1 68.66 288.1 54.28 267.5 71.41z" />
             </svg>
@@ -46,15 +113,30 @@ const PlayBar = (props) => {
               </svg>
             )}
           </button>
-          <button id="next">
+          <button id="next" onClick={() => nextSong()}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
               <path d="M287.1 447.1c17.67 0 31.1-14.33 31.1-32V96.03c0-17.67-14.33-32-32-32c-17.67 0-31.1 14.33-31.1 31.1v319.9C255.1 433.6 270.3 447.1 287.1 447.1zM52.51 440.6l192-159.1c7.625-6.436 11.43-15.53 11.43-24.62c0-9.094-3.809-18.18-11.43-24.62l-192-159.1C31.88 54.28 0 68.66 0 96.03v319.9C0 443.3 31.88 457.7 52.51 440.6z" />
             </svg>
           </button>
         </div>
         <div id="timestamp-bar">
-          <span id="time">0:02</span>
-          <input id="timebar"></input>
+          <span id="time">{displayTime()}</span>
+          <input
+            id="timebar"
+            type="range"
+            min="0"
+            max={
+              audioRef.current.duration
+                ? audioRef.current.duration
+                : `${audioRef.current.duration}`
+            }
+            value={songProgress}
+            onMouseUp={trackScroll}
+            onKeyUp={trackScroll}
+            onChange={(event) => onTrack(event.target.value)}
+            step="1"
+            style={{ background: timebarStyle }}
+          ></input>
         </div>
       </div>
       <div className="volume-controls-sec">
