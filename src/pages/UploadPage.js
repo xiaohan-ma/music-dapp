@@ -163,7 +163,7 @@ const UploadPage = () => {
             />
           </div>
           <div className="media-desc-sec">
-            <label htmlFor="desc">Description (not required)</label>
+            <label htmlFor="desc">Description</label>
             <textarea
               name="desc"
               id="desc"

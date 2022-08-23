@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/MusicCard.css";
 
 function MusicCard(props) {

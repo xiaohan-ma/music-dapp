@@ -1,20 +1,19 @@
 import "../styles/ProfilePage.css";
 import MusicCard2 from "../components/MusicCard2";
 import ProfileIcon from "../image/moonbird.png";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
+import { retrieveOwnTokens } from "../utils/contract";
 
 const ProfilePage = (props) => {
-  const [tokens, setTokens] = useState(false);
+  const [userTokens, setUserTokens] = useState([]);
 
-  /** Display tokens owned by user */
-  async function displayOwnedTokens() {}
-
+  async function getUserTokens() {
+    const tokens = await retrieveOwnTokens();
+    setUserTokens(tokens);
+  }
   useEffect(() => {
-    if (!tokens) {
-      displayOwnedTokens();
-    }
-  });
+    getUserTokens();
+  }, []);
 
   return (
     <div className="container">
@@ -40,13 +39,18 @@ const ProfilePage = (props) => {
           <div className="profileCollection">
             <h2>Collection</h2>
             <div className="profileAssets">
-              <MusicCard2 />
-              <MusicCard2 />
-              <MusicCard2 />
-
-              <MusicCard2 />
-
-              <MusicCard2 />
+              {userTokens.map((value, index) => {
+                return (
+                  <MusicCard2
+                    currentSong={props.currentSong}
+                    setCurrentSong={props.setCurrentSong}
+                    data={value}
+                    key={index}
+                    playing={props.playing}
+                    isPlaying={props.isPlaying}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
