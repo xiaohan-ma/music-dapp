@@ -13,17 +13,17 @@ const App = () => {
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState(false);
   const [playing, isPlaying] = useState(false);
-  const [platformContract, setPlatformContract] = useState({});
-  const [tokens, getTokens] = useState([]);
+  const [platformContract, setPlatformContract] = useState(
+    JSON.parse(localStorage.getItem("platformContract")) || {}
+  );
+  const [tokens, getTokens] = useState(
+    JSON.parse(localStorage.getItem("allTokens")) || []
+  );
   const [currentSong, setCurrentSong] = useState();
   const [songIndex, setSongIndex] = useState(0);
   const [songProgress, setSongProgress] = useState(0);
 
-  const audioRef = useRef(
-    new Audio(
-      "https://gateway.pinata.cloud/ipfs/QmSY7S2xz17z6QxVN4aTFpNbQsh9C4jdweAE5Jh7NsrTFe"
-    )
-  );
+  const audioRef = useRef(new Audio(tokens[0].media));
   const intervalRef = useRef();
   const isReady = useRef(false);
 
@@ -31,17 +31,38 @@ const App = () => {
     const contract = await loadContract();
     setPlatformContract(contract);
   }
+  useEffect(() => {
+    localStorage.setItem("platformContract", JSON.stringify(platformContract));
+  }, [platformContract]);
 
   useEffect(() => {
-    getContract();
+    const contract = JSON.parse(localStorage.getItem("platformContract"));
+    if (contract) {
+      setPlatformContract(contract);
+    } else {
+      getContract();
+    }
+    console.log(platformContract);
   }, []);
 
   async function getAllTokens() {
     const allTokens = await retrieveAllTokens();
     getTokens(allTokens);
   }
+
   useEffect(() => {
-    getAllTokens();
+    localStorage.setItem("allTokens", JSON.stringify(tokens));
+  }, [tokens]);
+
+  useEffect(() => {
+    const tokens = JSON.parse(localStorage.getItem("allTokens"));
+    if (tokens) {
+      getTokens(tokens);
+    } else {
+      getAllTokens();
+    }
+
+    console.log(tokens);
   }, []);
 
   useEffect(() => {

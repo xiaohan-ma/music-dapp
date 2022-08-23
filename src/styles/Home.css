@@ -11,7 +11,7 @@
 
 .promoAlbumCover {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   cursor: pointer;
 }
@@ -20,6 +20,34 @@
   height: 300px;
   width: 300px;
   border-radius: 0.7rem;
+}
+
+/* Play button */
+.play-btn {
+  display: none;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 4.6rem;
+  height: 4.6rem;
+  padding: 0.15rem;
+  align-self: flex-end;
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.play-btn svg {
+  fill: #2d2d42;
+  width: 3rem;
+  height: 2.8rem;
+}
+
+.play-btn:hover svg {
+  fill: rgb(243, 243, 243);
+}
+
+.promoAlbumCover:hover .play-btn {
+  display: flex;
 }
 
 .promoDetails {
